@@ -42,6 +42,10 @@
         pointer-events: none;
       }
 
+      iframe:fullscreen {
+        height: calc(100vh - 200px);
+      }
+
       .overlay {
         position: absolute;
         top: 20px;
@@ -86,6 +90,7 @@
         overflow: hidden;
         position: relative;
         cursor: pointer;
+        z-index: 99;
       }
 
       .progress-fill {
@@ -101,9 +106,8 @@
       }
 
       .fullscreen iframe {
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
+        height: calc(100vh - 200px);
+
       }
 
       .fullscreen .overlay {
@@ -136,7 +140,6 @@
   </head>
   <body>
     <div class="videos-grid">
-
       <div class="video-container">
         <div class="overlay"></div>
         <iframe
@@ -145,6 +148,7 @@
           allow="autoplay; encrypted-media"
           allowfullscreen
         ></iframe>
+
         <div class="video-title">فيديو 1: مقدمة المشروع</div>
         <div dir="ltr" class="progress-bar" id="progress-bar-video1">
           <div class="progress-fill" id="progress-video1"></div>
@@ -173,7 +177,7 @@
           ></i>
           <i
             class="fas fa-expand control-icon"
-            onclick="toggleFullScreen('video1')"
+            onclick="toggleFullscreen('video1')"
           ></i>
         </div>
       </div>
@@ -214,18 +218,14 @@
           ></i>
           <i
             class="fas fa-expand control-icon"
-            onclick="toggleFullScreen('video2')"
+            onclick="toggleFullscreen('video2')"
           ></i>
         </div>
       </div>
-
-
-
-
     </div>
 
     <script>
-  const players = {};
+      const players = {};
       const videoIds = ["video1", "video2", "video3"];
       const isPlaying = {};
 
@@ -291,7 +291,9 @@
           const duration = players[id].getDuration();
           const progress = (currentTime / duration) * 100;
           progressFill.style.width = `${progress}%`;
-          timeDisplay.innerText = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+          timeDisplay.innerText = `${formatTime(currentTime)} / ${formatTime(
+            duration
+          )}`;
           requestAnimationFrame(update);
         }
         update();
@@ -310,9 +312,34 @@
         const sec = Math.floor(seconds % 60);
         return `${min}:${sec.toString().padStart(2, "0")}`;
       }
-    </script>
-  
 
-  <script src="https://www.youtube.com/iframe_api"></script>
-</body>
+      function toggleFullscreen(id) {
+        const videoContainer = document.getElementById(id).parentElement;
+
+        if (!document.fullscreenElement) {
+          // تفعيل وضع الشاشة الكاملة
+          videoContainer.requestFullscreen().catch((err) => {
+            alert(`Error attempting to enable fullscreen mode: ${err.message}`);
+          });
+          // إضافة فئة fullscreen لتطبيق التغييرات في CSS
+          videoContainer.classList.add("fullscreen");
+        } else {
+          // إلغاء وضع الشاشة الكاملة
+          document.exitFullscreen();
+          // إزالة فئة fullscreen بعد الخروج من وضع الشاشة الكاملة
+          videoContainer.classList.remove("fullscreen");
+        }
+      }
+
+      document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) {
+          document
+            .querySelectorAll(".fullscreen")
+            .forEach((el) => el.classList.remove("fullscreen"));
+        }
+      });
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
 </html>
