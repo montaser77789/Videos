@@ -136,6 +136,7 @@
   </head>
   <body>
     <div class="videos-grid">
+
       <div class="video-container">
         <div class="overlay"></div>
         <iframe
@@ -176,21 +177,68 @@
           ></i>
         </div>
       </div>
+
+      <div class="video-container">
+        <div class="overlay"></div>
+        <iframe
+          id="video2"
+          src="https://www.youtube.com/embed/hUJRfn6NaCM?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+        <div class="video-title">فيديو 1: مقدمة المشروع</div>
+        <div dir="ltr" class="progress-bar" id="progress-bar-video2">
+          <div class="progress-fill" id="progress-video2"></div>
+        </div>
+        <div class="time-display" id="time-video2">00:00 / 00:00</div>
+        <div dir="ltr" class="controls">
+          <i
+            class="fas fa-volume-up control-icon"
+            onclick="adjustVolume('video2', 0.1)"
+          ></i>
+          <i
+            class="fas fa-forward control-icon"
+            onclick="forwardVideo('video2')"
+          ></i>
+          <i
+            class="fas fa-play control-icon"
+            onclick="togglePlayPause('video2')"
+          ></i>
+          <i
+            class="fas fa-backward control-icon"
+            onclick="rewindVideo('video2')"
+          ></i>
+          <i
+            class="fas fa-volume-down control-icon"
+            onclick="adjustVolume('video2', -0.1)"
+          ></i>
+          <i
+            class="fas fa-expand control-icon"
+            onclick="toggleFullScreen('video2')"
+          ></i>
+        </div>
+      </div>
+
+
+
+
     </div>
 
     <script>
-      const players = {};
-      let isPlaying = {};
+  const players = {};
+      const videoIds = ["video1", "video2", "video3"];
+      const isPlaying = {};
 
       function onYouTubeIframeAPIReady() {
-        const videoId = "video1";
-        players[videoId] = new YT.Player(videoId, {
-          events: {
-            onStateChange: (event) => onPlayerStateChange(event, videoId),
-            onReady: () => startProgress(videoId),
-          },
+        videoIds.forEach((id) => {
+          players[id] = new YT.Player(id, {
+            events: {
+              onStateChange: (event) => onPlayerStateChange(event, id),
+              onReady: () => startProgress(id),
+            },
+          });
+          isPlaying[id] = false;
         });
-        isPlaying[videoId] = false;
       }
 
       function onPlayerStateChange(event, id) {
@@ -209,9 +257,8 @@
       }
 
       function updateIcon(id) {
-        const icon = document
-          .querySelector(`#${id}`)
-          .parentElement.querySelector(".fa-play, .fa-pause");
+        const container = document.getElementById(id).parentElement;
+        const icon = container.querySelector(".fa-play, .fa-pause");
         if (icon) {
           icon.className = isPlaying[id]
             ? "fas fa-pause control-icon"
@@ -220,52 +267,39 @@
       }
 
       function forwardVideo(id) {
-        players[id].seekTo(players[id].getCurrentTime() + 10, true);
+        players[id].seekTo(players[id].getCurrentTime() + 10);
       }
 
       function rewindVideo(id) {
-        players[id].seekTo(players[id].getCurrentTime() - 10, true);
+        players[id].seekTo(players[id].getCurrentTime() - 10);
       }
 
       function adjustVolume(id, change) {
-        const currentVolume = players[id].getVolume() / 100;
-        let newVolume = currentVolume + change;
-        if (newVolume > 1) newVolume = 1;
-        if (newVolume < 0) newVolume = 0;
-        players[id].setVolume(newVolume * 100);
-      }
-
-      function toggleFullScreen(id) {
-        const container = document.getElementById(id).parentElement;
-        if (!document.fullscreenElement) {
-          container.classList.add("fullscreen");
-          container.requestFullscreen();
-        } else {
-          document.exitFullscreen();
-        }
+        const currentVolume = players[id].getVolume();
+        let newVolume = currentVolume + change * 100;
+        newVolume = Math.min(100, Math.max(0, newVolume));
+        players[id].setVolume(newVolume);
       }
 
       function startProgress(id) {
         const progressBar = document.getElementById(`progress-bar-${id}`);
-        const update = () => {
+        const progressFill = document.getElementById(`progress-${id}`);
+        const timeDisplay = document.getElementById(`time-${id}`);
+
+        function update() {
           const currentTime = players[id].getCurrentTime();
           const duration = players[id].getDuration();
           const progress = (currentTime / duration) * 100;
-          document.getElementById(
-            `progress-${id}`
-          ).style.width = `${progress}%`;
-          document.getElementById(`time-${id}`).innerText = `${formatTime(
-            currentTime
-          )} / ${formatTime(duration)}`;
+          progressFill.style.width = `${progress}%`;
+          timeDisplay.innerText = `${formatTime(currentTime)} / ${formatTime(duration)}`;
           requestAnimationFrame(update);
-        };
+        }
         update();
 
         progressBar.addEventListener("click", (e) => {
           const rect = progressBar.getBoundingClientRect();
           const clickX = e.clientX - rect.left;
-          const width = rect.width;
-          const percent = clickX / width;
+          const percent = clickX / rect.width;
           const duration = players[id].getDuration();
           players[id].seekTo(duration * percent);
         });
@@ -276,16 +310,9 @@
         const sec = Math.floor(seconds % 60);
         return `${min}:${sec.toString().padStart(2, "0")}`;
       }
-
-      document.addEventListener("fullscreenchange", () => {
-        if (!document.fullscreenElement) {
-          document
-            .querySelectorAll(".fullscreen")
-            .forEach((el) => el.classList.remove("fullscreen"));
-        }
-      });
     </script>
+  
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-  </body>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
 </html>
