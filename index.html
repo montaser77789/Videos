@@ -1,211 +1,268 @@
 <!DOCTYPE html>
 <html lang="ar">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>فيديوهات كورسات تعليمية</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      margin: 0;
-      background-color: #111;
-      color: #fff;
-      font-family: 'Tajawal', sans-serif;
-      direction: rtl;
-    }
-
-    .videos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .video-container {
-      background: #000;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 0 15px rgba(141, 176, 103, 0.5);
-      transition: transform 0.3s;
-    }
-
-    .video-container:hover {
-      transform: translateY(-5px);
-    }
-
-    iframe {
-      width: 100%;
-      height: 200px;
-      border-radius: 10px;
-      border: none;
-      pointer-events: none;
-    }
-
-    .overlay {
-      position: absolute;
-      top: 20px;
-      left: 0;
-      width: 100%;
-      height: 200px;
-      z-index: 2;
-      background: transparent;
-      cursor: not-allowed;
-    }
-
-    .video-title {
-      margin-top: 10px;
-      font-size: 1.2em;
-    }
-
-    .controls {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-    }
-
-    .control-icon {
-      font-size: 1.5em;
-      color: #8db067;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    .control-icon:hover {
-      color: #8db067;
-    }
-
-    .fullscreen iframe {
-      width: 100vw;
-      height: 100vh;
-      border-radius: 0;
-    }
-
-    .fullscreen .overlay {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    .fullscreen .controls {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 4;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    @media (max-width: 480px) {
-      iframe {
-        height: 180px;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فيديوهات كورسات تعليمية</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        background-color: #111;
+        color: #fff;
+        font-family: "Tajawal", sans-serif;
+        direction: rtl;
       }
-      .control-icon {
+
+      .videos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .video-container {
+        background: #000;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 0 15px rgba(141, 176, 103, 0.5);
+        transition: transform 0.3s;
+      }
+
+      .video-container:hover {
+        transform: translateY(-5px);
+      }
+
+      iframe {
+        width: 100%;
+        height: 200px;
+        border-radius: 10px;
+        border: none;
+        pointer-events: none;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        width: 100%;
+        height: 200px;
+        z-index: 2;
+        background: transparent;
+        cursor: not-allowed;
+      }
+
+      .video-title {
+        margin-top: 10px;
         font-size: 1.2em;
       }
-    }
-  </style>
-</head>
-<body>
 
-<div class="videos-grid">
-  <div class="video-container">
-    <div class="overlay"></div>
-    <iframe id="video1" src="https://www.youtube.com/embed/2DTc4QpGNys?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <div class="video-title">فيديو 1: مقدمة المشروع</div>
-    <div class="controls">
-      <i class="fas fa-play control-icon" onclick="togglePlayPause('video1')"></i>
-      <i class="fas fa-forward control-icon" onclick="forwardVideo('video1')"></i>
-      <i class="fas fa-backward control-icon" onclick="rewindVideo('video1')"></i>
-      <i class="fas fa-expand control-icon" onclick="toggleFullScreen('video1')"></i>
-    </div>
-  </div>
+      .controls {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
 
-  <div class="video-container">
-    <div class="overlay"></div>
-    <iframe id="video2" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <div class="video-title">فيديو 2: شرح الأدوات</div>
-    <div class="controls">
-      <i class="fas fa-play control-icon" onclick="togglePlayPause('video2')"></i>
-      <i class="fas fa-forward control-icon" onclick="forwardVideo('video2')"></i>
-      <i class="fas fa-backward control-icon" onclick="rewindVideo('video2')"></i>
-      <i class="fas fa-expand control-icon" onclick="toggleFullScreen('video2')"></i>
-    </div>
-  </div>
+      .control-icon {
+        font-size: 1.5em;
+        color: #8db067;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
 
-  <div class="video-container">
-    <div class="overlay"></div>
-    <iframe id="video3" src="https://www.youtube.com/embed/ScMzIvxBSi4?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <div class="video-title">فيديو 3: تطبيق عملي</div>
-    <div class="controls">
-      <i class="fas fa-play control-icon" onclick="togglePlayPause('video3')"></i>
-      <i class="fas fa-forward control-icon" onclick="forwardVideo('video3')"></i>
-      <i class="fas fa-backward control-icon" onclick="rewindVideo('video3')"></i>
-      <i class="fas fa-expand control-icon" onclick="toggleFullScreen('video3')"></i>
-    </div>
-  </div>
-</div>
+      .control-icon:hover {
+        color: #8db067;
+      }
 
-<script>
-  const players = {};
-  let isPlaying = {};
+      .fullscreen iframe {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+      }
 
-  function onYouTubeIframeAPIReady() {
-    ['video1', 'video2', 'video3'].forEach(id => {
-      players[id] = new YT.Player(id, {
-        events: {
-          'onStateChange': event => onPlayerStateChange(event, id)
+      .fullscreen .overlay {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .fullscreen .controls {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 4;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      @media (max-width: 480px) {
+        iframe {
+          height: 180px;
         }
-      });
-      isPlaying[id] = false;
-    });
-  }
+        .control-icon {
+          font-size: 1.2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="videos-grid">
+      <div class="video-container">
+        <div class="overlay"></div>
+        <iframe
+          id="video1"
+          src="https://www.youtube.com/embed/2DTc4QpGNys?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+        <div class="video-title">فيديو 1: مقدمة المشروع</div>
+        <div class="controls">
+          <i
+            class="fas fa-play control-icon"
+            onclick="togglePlayPause('video1')"
+          ></i>
+          <i
+            class="fas fa-forward control-icon"
+            onclick="forwardVideo('video1')"
+          ></i>
+          <i
+            class="fas fa-backward control-icon"
+            onclick="rewindVideo('video1')"
+          ></i>
+          <i
+            class="fas fa-expand control-icon"
+            onclick="toggleFullScreen('video1')"
+          ></i>
+        </div>
+      </div>
 
-  function onPlayerStateChange(event, id) {
-    isPlaying[id] = event.data === YT.PlayerState.PLAYING;
-    updateIcon(id);
-  }
+      <div class="video-container">
+        <div class="overlay"></div>
+        <iframe
+          id="video2"
+          src="https://www.youtube.com/embed/2DTc4QpGNys?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+        <div class="video-title">فيديو 2: شرح الأدوات</div>
+        <div class="controls">
+          <i
+            class="fas fa-play control-icon"
+            onclick="togglePlayPause('video2')"
+          ></i>
+          <i
+            class="fas fa-forward control-icon"
+            onclick="forwardVideo('video2')"
+          ></i>
+          <i
+            class="fas fa-backward control-icon"
+            onclick="rewindVideo('video2')"
+          ></i>
+          <i
+            class="fas fa-expand control-icon"
+            onclick="toggleFullScreen('video2')"
+          ></i>
+        </div>
+      </div>
 
-  function togglePlayPause(id) {
-    if (isPlaying[id]) {
-      players[id].pauseVideo();
-    } else {
-      players[id].playVideo();
-    }
-  }
+      <div class="video-container">
+        <div class="overlay"></div>
+        <iframe
+          id="video3"
+          src="https://www.youtube.com/embed/2DTc4QpGNys?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+        <div class="video-title">فيديو 3: تطبيق عملي</div>
+        <div class="controls">
+          <i
+            class="fas fa-play control-icon"
+            onclick="togglePlayPause('video3')"
+          ></i>
+          <i
+            class="fas fa-forward control-icon"
+            onclick="forwardVideo('video3')"
+          ></i>
+          <i
+            class="fas fa-backward control-icon"
+            onclick="rewindVideo('video3')"
+          ></i>
+          <i
+            class="fas fa-expand control-icon"
+            onclick="toggleFullScreen('video3')"
+          ></i>
+        </div>
+      </div>
+    </div>
 
-  function updateIcon(id) {
-    const icon = document.querySelector(`#${id}`).parentElement.querySelector('.fa-play');
-    if (icon) {
-      icon.className = isPlaying[id] ? 'fas fa-pause control-icon' : 'fas fa-play control-icon';
-    }
-  }
+    <script>
+      const players = {};
+      let isPlaying = {};
 
-  function forwardVideo(id) {
-    players[id].seekTo(players[id].getCurrentTime() + 10, true);
-  }
+      function onYouTubeIframeAPIReady() {
+        ["video1", "video2", "video3"].forEach((id) => {
+          players[id] = new YT.Player(id, {
+            events: {
+              onStateChange: (event) => onPlayerStateChange(event, id),
+            },
+          });
+          isPlaying[id] = false;
+        });
+      }
 
-  function rewindVideo(id) {
-    players[id].seekTo(players[id].getCurrentTime() - 10, true);
-  }
+      function onPlayerStateChange(event, id) {
+        isPlaying[id] = event.data === YT.PlayerState.PLAYING;
+        updateIcon(id);
+      }
 
-  function toggleFullScreen(id) {
-    const container = document.getElementById(id).parentElement;
-    if (!document.fullscreenElement) {
-      container.classList.add('fullscreen');
-      container.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-      container.classList.remove('fullscreen');
-    }
-  }
-</script>
+      function togglePlayPause(id) {
+        if (isPlaying[id]) {
+          players[id].pauseVideo();
+        } else {
+          players[id].playVideo();
+        }
+      }
 
-<script src="https://www.youtube.com/iframe_api"></script>
-</body>
+      function updateIcon(id) {
+        const icon = document
+          .querySelector(`#${id}`)
+          .parentElement.querySelector(".fa-play");
+        if (icon) {
+          icon.className = isPlaying[id]
+            ? "fas fa-pause control-icon"
+            : "fas fa-play control-icon";
+        }
+      }
+
+      function forwardVideo(id) {
+        players[id].seekTo(players[id].getCurrentTime() + 10, true);
+      }
+
+      function rewindVideo(id) {
+        players[id].seekTo(players[id].getCurrentTime() - 10, true);
+      }
+
+      function toggleFullScreen(id) {
+        const container = document.getElementById(id).parentElement;
+        if (!document.fullscreenElement) {
+          container.classList.add("fullscreen");
+          container.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+          container.classList.remove("fullscreen");
+        }
+      }
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
 </html>
