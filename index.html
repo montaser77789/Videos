@@ -74,6 +74,8 @@
         color: #8db067;
         cursor: pointer;
         transition: color 0.3s;
+        margin-top: auto;
+        padding: 10px 0;
       }
 
       .control-icon:hover {
@@ -99,9 +101,9 @@
         top: 10px;
         left: 10px;
         z-index: 4;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 10px;
-        border-radius: 5px;
+        bottom: 0;
+        display: flex;
+        right: 0;
       }
 
       @media (max-width: 480px) {
@@ -125,7 +127,7 @@
           allowfullscreen
         ></iframe>
         <div class="video-title">فيديو 1: مقدمة المشروع</div>
-        <div class="controls">
+        <div  dir="ltr" class="controls">
           <i
             class="fas fa-play control-icon"
             onclick="togglePlayPause('video1')"
@@ -154,7 +156,7 @@
           allowfullscreen
         ></iframe>
         <div class="video-title">فيديو 2: شرح الأدوات</div>
-        <div class="controls">
+        <div   dir="ltr" class="controls">
           <i
             class="fas fa-play control-icon"
             onclick="togglePlayPause('video2')"
@@ -179,11 +181,12 @@
         <iframe
           id="video3"
           src="https://www.youtube.com/embed/2DTc4QpGNys?enablejsapi=1&modestbranding=1&rel=0&controls=0&iv_load_policy=3&fs=0&showinfo=0"
+          frameborder="0"
           allow="autoplay; encrypted-media"
           allowfullscreen
         ></iframe>
         <div class="video-title">فيديو 3: تطبيق عملي</div>
-        <div class="controls">
+        <div dir="ltr" class="controls">
           <i
             class="fas fa-play control-icon"
             onclick="togglePlayPause('video3')"
@@ -230,12 +233,15 @@
         } else {
           players[id].playVideo();
         }
+        // تحديث الأيقونة فورًا عند النقر
+        isPlaying[id] = !isPlaying[id];
+        updateIcon(id);
       }
 
       function updateIcon(id) {
         const icon = document
           .querySelector(`#${id}`)
-          .parentElement.querySelector(".fa-play");
+          .parentElement.querySelector(".control-icon");
         if (icon) {
           icon.className = isPlaying[id]
             ? "fas fa-pause control-icon"
@@ -258,9 +264,19 @@
           container.requestFullscreen();
         } else {
           document.exitFullscreen();
-          container.classList.remove("fullscreen");
         }
       }
+
+      // منع تغيير الحجم عند الخروج من الشاشة الكاملة
+      document.addEventListener("fullscreenchange", () => {
+        const fullscreenElement = document.fullscreenElement;
+        if (!fullscreenElement) {
+          const containers = document.querySelectorAll(".fullscreen");
+          containers.forEach((container) => {
+            container.classList.remove("fullscreen");
+          });
+        }
+      });
     </script>
 
     <script src="https://www.youtube.com/iframe_api"></script>
